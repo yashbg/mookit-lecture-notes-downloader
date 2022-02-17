@@ -1,4 +1,5 @@
 import configparser as cfg
+import requests
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
 
@@ -21,15 +22,22 @@ driver.find_element(By.ID, 'edit-submit').click()
 url = "https://hello.iitk.ac.in/eco342a22/#/home"
 driver.get(url)
 
+links = driver.find_elements(By.TAG_NAME, 'a')
+
+dir = '/home/yashbg/Desktop/6th Sem/ECO342A/Lectures/'
+starting_lec = 2
+i = 1
+for link in links:
+    url = link.get_attribute('href')
+    if url and '.pdf' in url:
+        if i < starting_lec:
+            i += 1
+            continue
+        print('Downloading Lecture', i)
+        r = requests.get(url.split('?')[0])
+        with open(dir + f'Lecture {i}.pdf', 'wb') as f:
+            f.write(r.content)
+        i += 1
+
 driver.close()
-
-# r = requests.get(url)
-
-# print(r.text)
-
-# soup = BeautifulSoup(r.text, 'html.parser')
-
-# links = soup.find_all('a')
-
-# # for link in links:
-# #     print(link)
+print('All files downloaded')
