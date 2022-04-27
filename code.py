@@ -3,12 +3,16 @@ import requests
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
 
+coursename = 'cs253a'
+starting_lec = 2
+dir = f'/home/yashbg/Desktop/6th Sem/{coursename.upper()}/Lectures/'
+
 parser = cfg.ConfigParser()
 parser.read('config.cfg')
 username = parser.get('creds', 'username')
 pwd = parser.get('creds', 'pwd')
 
-url = "https://hello.iitk.ac.in/user/login"
+url = 'https://hello.iitk.ac.in/user/login'
 driver = Chrome()
 driver.get(url)
 
@@ -19,13 +23,11 @@ pwd_ele.send_keys(pwd)
 
 driver.find_element(By.ID, 'edit-submit').click()
 
-url = "https://hello.iitk.ac.in/eco342a22/#/home"
+url = f"https://hello.iitk.ac.in/{coursename + '22'}/#/home"
 driver.get(url)
 
 links = driver.find_elements(By.TAG_NAME, 'a')
 
-dir = '/home/yashbg/Desktop/6th Sem/ECO342A/Lectures/'
-starting_lec = 2
 i = 1
 for link in links:
     url = link.get_attribute('href')
